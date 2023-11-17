@@ -4,18 +4,15 @@ import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "statues")
+@AllArgsConstructor
+@Data
+@Table(name = "roles")
 @Entity
-public class Status {
+public class Role {
     @Id
     @GeneratedValue
-    private short id;
+    private Long id;
     private String name;
-    @Nullable
-    private String description;
 }

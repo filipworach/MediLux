@@ -41,6 +41,21 @@ public class PatientController {
         }
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient)
+    {
+        try {
+            return new ResponseEntity<>(patientService.registerPatient(patient), HttpStatus.OK);
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Patient patient)
+    {
+       return new ResponseEntity<>(patientService.login(patient), HttpStatus.ACCEPTED);
+    }
 
 
 }

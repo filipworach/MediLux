@@ -1,8 +1,8 @@
 package com.MediLux.MediLux.Model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -26,4 +26,5 @@ public class Patient {
     private String city;
     @Column(name = "e_mail")
     private String email;
+    private String password;
 }

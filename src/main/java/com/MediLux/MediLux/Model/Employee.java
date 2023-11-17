@@ -1,10 +1,10 @@
 package com.MediLux.MediLux.Model;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 
 import java.time.LocalDate;

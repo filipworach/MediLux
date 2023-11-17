@@ -1,11 +1,12 @@
 package com.MediLux.MediLux.Model;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import org.springframework.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.Set;
 @Table(name = "visits")
 @Entity
 public class Visit {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private long id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
