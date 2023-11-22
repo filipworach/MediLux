@@ -5,6 +5,7 @@ import com.MediLux.MediLux.Exceptions.NotFoundException;
 import com.MediLux.MediLux.Model.Patient;
 import com.MediLux.MediLux.Service.PatientService;
 import lombok.AllArgsConstructor;
+import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/patient")
+@CrossOrigin(origins = "localhost:3000/*", methods = RequestMethod.POST)
+
 public class PatientController {
     private final PatientService patientService;
 
