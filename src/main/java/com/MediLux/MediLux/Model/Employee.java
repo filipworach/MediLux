@@ -15,13 +15,13 @@ import java.util.Set;
 @Table(name = "employees")
 @Entity
 public class Employee {
-    @Id @GeneratedValue
-    private long id;
+    @Id
+    @Column(name = "e_mail")
+    private String email;
     private String name;
     private String surname;
     private LocalDate birthDate;
     private String pesel;
-    private String email;
     @Nullable
     private String streetName;
     private String houseNumber;
@@ -32,4 +32,7 @@ public class Employee {
     private boolean isDoctor;
     @OneToMany(mappedBy = "employee")
     private Set<Visit> visitList;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }

@@ -1,5 +1,6 @@
 package com.MediLux.MediLux.Controllers;
 
+import com.MediLux.MediLux.Dto.UserDto;
 import com.MediLux.MediLux.Exceptions.AlreadyExistsException;
 import com.MediLux.MediLux.Exceptions.NotFoundException;
 import com.MediLux.MediLux.Model.Patient;
@@ -20,10 +21,10 @@ import java.util.List;
 public class PatientController {
     private final PatientService patientService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Patient> getUserById(@PathVariable long id) {
+    @GetMapping("/{email}")
+    public ResponseEntity<Patient> getUserById(@PathVariable String email) {
         try {
-            return new ResponseEntity<>(patientService.findById(id), HttpStatus.OK);
+            return new ResponseEntity<>(patientService.findByEmail(email), HttpStatus.OK);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -55,9 +56,9 @@ public class PatientController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Patient patient)
+    public ResponseEntity<String> login(@RequestBody UserDto userDto)
     {
-       return new ResponseEntity<>(patientService.login(patient), HttpStatus.ACCEPTED);
+       return new ResponseEntity<>(patientService.login(userDto), HttpStatus.ACCEPTED);
     }
 
 

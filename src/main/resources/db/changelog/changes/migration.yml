@@ -1,5 +1,26 @@
 databaseChangeLog:
   - changeSet:
+      id: create_role_table
+      author: Filip
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    unique: true
+  - changeSet:
       id: create_user_table
       author: Filip
       changes:
@@ -7,9 +28,8 @@ databaseChangeLog:
             tableName: patients
             columns:
               - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  name: e_mail
+                  type: VARCHAR(60)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -45,16 +65,23 @@ databaseChangeLog:
                   name: city
                   type: VARCHAR(50)
               - column:
-                  name: e_mail
-                  type: VARCHAR(60)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
                   name: password
                   type: VARCHAR(200)
                   constraints:
                     nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: patients
+            baseColumnNames: role_id
+            constraintName: fk_patient_role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            onDelete: CASCADE
+
   - changeSet:
       id: create_status_table
       author: Filip
@@ -79,6 +106,9 @@ databaseChangeLog:
                   constraints:
                     nullable: true
 
+
+
+
   - changeSet:
       id: create_employee_table
       author: Filip
@@ -87,9 +117,8 @@ databaseChangeLog:
             tableName: employees
             columns:
               - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  name: e_mail
+                  type: VARCHAR(60)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -147,6 +176,18 @@ databaseChangeLog:
                   type: BOOLEAN
                   constraints:
                     nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: employees
+            baseColumnNames: role_id
+            constraintName: fk_employee_role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            onDelete: CASCADE
 
   - changeSet:
       id: create_visit_table
@@ -165,12 +206,12 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: patient_id
-                  type: BIGINT
+                  type: VARCHAR(60)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: doctor_id
-                  type: BIGINT
+                  type: VARCHAR(60)
                   constraints:
                     nullable: false
               - column:
@@ -198,14 +239,14 @@ databaseChangeLog:
             baseColumnNames: patient_id
             constraintName: fk_patient_id
             referencedTableName: patients
-            referencedColumnNames: id
+            referencedColumnNames: e_mail
             onDelete: CASCADE
         - addForeignKeyConstraint:
             baseTableName: visits
             baseColumnNames: doctor_id
             constraintName: fk_doctor_id
             referencedTableName: employees
-            referencedColumnNames: id
+            referencedColumnNames: e_mail
             onDelete: CASCADE
         - addForeignKeyConstraint:
             baseTableName: visits
@@ -214,13 +255,35 @@ databaseChangeLog:
             referencedTableName: statuses
             referencedColumnNames: id
             onDelete: CASCADE
-
   - changeSet:
-      id: add_sequences
+      id: remove_email_column
       author: Filip
       changes:
-        - createSequence:
-            sequenceName: patients_seq
-            startValue: 1
-            incrementBy: 1
-            dataType: BIGINT
+        - dropColumn:
+            tableName: employees
+            columnName: email
+
+  - changeSet:
+      id: add_password_column_to_employees
+      author: Filip
+      changes:
+        - addColumn:
+            tableName: employees
+            columns:
+              - column:
+                  name: password
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+
+
+
+#  - changeSet:
+#      id: add_sequences
+#      author: Filip
+#      changes:
+#        - createSequence:
+#            sequenceName: patients_seq
+#            startValue: 1
+#            incrementBy: 1
+#            dataType: BIGINT

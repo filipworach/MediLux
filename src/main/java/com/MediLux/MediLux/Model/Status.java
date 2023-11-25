@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "statues")
+@Table(name = "statuses")
 @Entity
 public class Status {
     @Id
