@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 @Data
 @AllArgsConstructor
@@ -17,8 +18,9 @@ import java.util.Set;
 @Entity
 public class Visit {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", allocationSize = 1)
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     @Nullable
@@ -26,9 +28,8 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Employee employee;
-    private LocalDate date;
-    private LocalDate startTime;
-    private LocalDate stopTime;
+    private LocalDateTime startTime;
+    private LocalDateTime stopTime;
     @Nullable
     private String comment;
     private String room;

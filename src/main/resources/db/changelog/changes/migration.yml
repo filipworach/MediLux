@@ -276,7 +276,38 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+  - changeSet:
+      id: remove_date_column
+      author: Filip
+      changes:
+        - dropColumn:
+            tableName: visits
+            columnName: date
 
+  - changeSet:
+      id: createSequence
+      author: Filip
+      changes:
+        - createSequence:
+            sequenceName: hibernate_sequence
+            startValue: 1
+            incrementBy: 1
+
+  - changeSet:
+      id: change_id_to_serial
+      author: Filip
+      changes:
+        - modifyDataType:
+            tableName: visits
+            columnName: id
+            newDataType: SERIAL
+
+  - changeSet:
+      id: dropSequence
+      author: Filip
+      changes:
+        - dropSequence:
+            sequenceName: hibernate_sequence
 
 #  - changeSet:
 #      id: add_sequences

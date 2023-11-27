@@ -1,42 +1,34 @@
-package com.MediLux.MediLux.Model;
+package com.MediLux.MediLux.Dto;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.MediLux.MediLux.Model.Role;
+import com.MediLux.MediLux.Model.Visit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-@Table(name = "employees")
-@Entity
-public class Employee {
-    @Id
-    @Column(name = "e_mail")
+public class EmployeeDto {
+
     private String email;
     private String name;
     private String surname;
     private LocalDate birthDate;
     private String pesel;
-    @Nullable
+
     private String streetName;
     private String houseNumber;
-    @Nullable
-    private String flatNumber;
     private String password;
+
+    private String flatNumber;
     private String postCode;
     private String city;
     private boolean isDoctor;
-    @OneToMany(mappedBy = "employee")
-    @JsonIgnore
-    private Set<Visit> visitList;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+
+    private String role;
 }

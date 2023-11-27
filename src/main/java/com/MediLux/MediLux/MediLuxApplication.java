@@ -18,7 +18,7 @@ public class MediLuxApplication {
 	public FilterRegistrationBean filterRegistrationBean() {
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new JwtFilter());
-		filterRegistrationBean.setUrlPatterns(Collections.singleton("/patient"));
+		filterRegistrationBean.setUrlPatterns(Collections.singleton("/"));
 		return filterRegistrationBean;
 	}
 }
