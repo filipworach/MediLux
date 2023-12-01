@@ -51,7 +51,7 @@ public class PatientService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = bCryptPasswordEncoder.encode(patient.getPassword());
         patient.setPassword(encodedPassword);
-        patient.setRole(roleRepository.findByName("PATIENT").orElseThrow(() -> new NotFoundException("Nie znaleziono roli PATIENT")));
+        patient.setRole(roleRepository.findByName("PACJENT").orElseThrow(() -> new NotFoundException("Nie znaleziono roli PATIENT")));
         patientRepository.save(patient);
 
         return patient;

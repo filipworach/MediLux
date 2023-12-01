@@ -29,6 +29,6 @@ public class Security extends WebSecurityConfigurerAdapter{
                 .antMatchers("/**").permitAll()
                 .and()
                 .csrf().disable()
-                .headers().frameOptions().disable(); // Jeśli używasz H2 Console, wyłącz frameOptions
+                .headers().frameOptions().disable();
     }
 }

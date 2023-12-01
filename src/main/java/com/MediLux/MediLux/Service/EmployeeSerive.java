@@ -40,7 +40,6 @@ public class EmployeeSerive {
         employee.setPostCode(employeeDto.getPostCode());
         employee.setCity(employeeDto.getCity());
         employee.setDoctor(employeeDto.isDoctor());
-
         employeeRepository.save(employee);
 
         return employee;

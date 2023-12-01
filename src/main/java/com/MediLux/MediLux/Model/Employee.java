@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,9 +34,7 @@ public class Employee {
     private String postCode;
     private String city;
     private boolean isDoctor;
-    @OneToMany(mappedBy = "employee")
-    @JsonIgnore
-    private Set<Visit> visitList;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

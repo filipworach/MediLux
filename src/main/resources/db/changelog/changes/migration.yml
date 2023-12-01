@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: SERIAL
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -20,8 +20,56 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
+
   - changeSet:
-      id: create_user_table
+      id: create_visit_types_table
+      author: Filip
+      changes:
+        - createTable:
+            tableName: visit_types
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+
+
+  - changeSet:
+      id: create_status_table
+      author: Filip
+      changes:
+        - createTable:
+            tableName: statuses
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(40)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: create_patients_table
       author: Filip
       changes:
         - createTable:
@@ -91,7 +139,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: SMALLINT
+                  type: SERIAL
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -105,9 +153,6 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: true
-
-
-
 
   - changeSet:
       id: create_employee_table
@@ -145,12 +190,6 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
-                  name: email
-                  type: VARCHAR(60)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
                   name: street_name
                   type: VARCHAR(50)
               - column:
@@ -172,13 +211,18 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: is_doctor
-                  type: BOOLEAN
+                  name: role_id
+                  type: BIGINT
                   constraints:
                     nullable: false
               - column:
-                  name: role_id
-                  type: BIGINT
+                  name: password
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_doctor
+                  type: BOOLEAN
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
@@ -190,6 +234,39 @@ databaseChangeLog:
             onDelete: CASCADE
 
   - changeSet:
+      id: createEmployeeVisitTable
+      author: your_name
+      changes:
+        - createTable:
+            tableName: employee_visit
+            columns:
+              - column:
+                  name: employee_id
+                  type: VARCHAR(60)
+              - column:
+                  name: visit_type_id
+                  type: SERIAL
+        - addPrimaryKey:
+            tableName: employee_visit
+            columnNames: "employee_id, visit_type_id"
+        - addForeignKeyConstraint:
+            baseTableName: employee_visit
+            baseColumnNames: employee_id
+            referencedTableName: employees
+            referencedColumnNames: e_mail
+            constraintName: fk_employee_visit_employee
+        - addForeignKeyConstraint:
+            baseTableName: employee_visit
+            baseColumnNames: visit_type_id
+            referencedTableName: visit_types
+            referencedColumnNames: id
+            constraintName: fk_employee_visit_visit_type
+
+
+
+
+
+  - changeSet:
       id: create_visit_table
       author: Filip
       changes:
@@ -198,7 +275,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: SERIAL
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -215,14 +292,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: date
-                  type: DATE
-              - column:
                   name: start_time
-                  type: TIME
+                  type: TIMESTAMP
               - column:
                   name: stop_time
-                  type: TIME
+                  type: TIMESTAMP
               - column:
                   name: comment
                   type: VARCHAR(255)
@@ -232,6 +306,16 @@ databaseChangeLog:
               - column:
                   name: status_id
                   type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prescription
+                  type: BLOB
+                  constraints:
+                    nullable: true
+              - column:
+                  name: visit_type_id
+                  type: SMALLINT
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
@@ -255,66 +339,15 @@ databaseChangeLog:
             referencedTableName: statuses
             referencedColumnNames: id
             onDelete: CASCADE
-  - changeSet:
-      id: remove_email_column
-      author: Filip
-      changes:
-        - dropColumn:
-            tableName: employees
-            columnName: email
+        - addForeignKeyConstraint:
+            baseTableName: visits
+            baseColumnNames: visit_type_id
+            constraintName: fk_visit_type_id
+            referencedTableName: visit_types
+            referencedColumnNames: id
 
-  - changeSet:
-      id: add_password_column_to_employees
-      author: Filip
-      changes:
-        - addColumn:
-            tableName: employees
-            columns:
-              - column:
-                  name: password
-                  type: varchar(200)
-                  constraints:
-                    nullable: false
 
-  - changeSet:
-      id: remove_date_column
-      author: Filip
-      changes:
-        - dropColumn:
-            tableName: visits
-            columnName: date
 
-  - changeSet:
-      id: createSequence
-      author: Filip
-      changes:
-        - createSequence:
-            sequenceName: hibernate_sequence
-            startValue: 1
-            incrementBy: 1
 
-  - changeSet:
-      id: change_id_to_serial
-      author: Filip
-      changes:
-        - modifyDataType:
-            tableName: visits
-            columnName: id
-            newDataType: SERIAL
 
-  - changeSet:
-      id: dropSequence
-      author: Filip
-      changes:
-        - dropSequence:
-            sequenceName: hibernate_sequence
 
-#  - changeSet:
-#      id: add_sequences
-#      author: Filip
-#      changes:
-#        - createSequence:
-#            sequenceName: patients_seq
-#            startValue: 1
-#            incrementBy: 1
-#            dataType: BIGINT

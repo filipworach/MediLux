@@ -13,8 +13,8 @@ import org.springframework.lang.Nullable;
 @Entity
 public class Status {
     @Id
-    @GeneratedValue
-    private short id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     @Nullable
     private String description;

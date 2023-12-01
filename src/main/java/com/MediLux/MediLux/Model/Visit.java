@@ -19,7 +19,6 @@ import java.util.Set;
 public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", allocationSize = 1)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
@@ -36,4 +35,7 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+    @ManyToOne
+    @JoinColumn(name = "visit_type_id")
+    private VisitType visitType;
 }
