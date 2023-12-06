@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/visit_types")
 public class VisitTypeController {
     private final VisitTypeService visitTypeService;
+
     @GetMapping("")
     public ResponseEntity<List<VisitType>> getVisitTypes() {
         return new ResponseEntity<>(visitTypeService.findAllVisits(), HttpStatus.OK);

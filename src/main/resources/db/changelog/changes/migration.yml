@@ -310,7 +310,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: prescription
-                  type: BLOB
+                  type: BYTEA
                   constraints:
                     nullable: true
               - column:
@@ -345,6 +345,13 @@ databaseChangeLog:
             constraintName: fk_visit_type_id
             referencedTableName: visit_types
             referencedColumnNames: id
+
+
+
+
+
+
+
 
 
 

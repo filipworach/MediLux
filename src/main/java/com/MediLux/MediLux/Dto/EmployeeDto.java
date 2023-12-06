@@ -2,6 +2,7 @@ package com.MediLux.MediLux.Dto;
 
 import com.MediLux.MediLux.Model.Role;
 import com.MediLux.MediLux.Model.Visit;
+import com.MediLux.MediLux.Model.VisitType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,4 +33,5 @@ public class EmployeeDto {
     private boolean isDoctor;
 
     private String role;
+    private List<VisitType> visitTypes;
 }

@@ -5,6 +5,7 @@ import com.MediLux.MediLux.Service.StatusService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class StatusController {
     StatusService statusService;
+    @PreAuthorize("hasAuthority('LEKARZ')")
     @GetMapping("")
     public ResponseEntity<List<Status>> findAll() {
         return new ResponseEntity<>(statusService.findAll(), HttpStatus.OK);

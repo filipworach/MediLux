@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class PatientController {
         }
     }
 
+    @PreAuthorize("hasAuthority('PACJENT')")
     @GetMapping("")
     public ResponseEntity<List<Patient>> getAllUsers() {
         return new ResponseEntity<>(patientService.findAll(), HttpStatus.OK);
@@ -56,7 +58,7 @@ public class PatientController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> login(@RequestBody UserDto userDto)
     {
        return new ResponseEntity<>(patientService.login(userDto), HttpStatus.ACCEPTED);
     }

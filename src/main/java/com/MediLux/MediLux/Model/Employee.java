@@ -38,4 +38,7 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToMany(mappedBy = "employeeSet")
+    private List<VisitType> visitTypes;
 }

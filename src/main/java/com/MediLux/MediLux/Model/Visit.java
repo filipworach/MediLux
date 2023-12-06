@@ -38,4 +38,8 @@ public class Visit {
     @ManyToOne
     @JoinColumn(name = "visit_type_id")
     private VisitType visitType;
+
+    private byte[] prescription;
+
+
 }

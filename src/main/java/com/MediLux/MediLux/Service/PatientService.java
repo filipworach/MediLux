@@ -6,6 +6,7 @@ import com.MediLux.MediLux.Exceptions.AlreadyExistsException;
 import com.MediLux.MediLux.Exceptions.NotFoundException;
 import com.MediLux.MediLux.Exceptions.WrongCredentials;
 import com.MediLux.MediLux.Model.Patient;
+import com.MediLux.MediLux.Model.Role;
 import com.MediLux.MediLux.Repositories.PatientRepository;
 import com.MediLux.MediLux.Repositories.RoleRepository;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +26,7 @@ import java.util.Optional;
 public class PatientService {
     private final PatientRepository patientRepository;
     private final RoleRepository roleRepository;
-
+    private final JWTService jwtService;
 
     public Patient findByEmail(String email) throws NotFoundException {
         return patientRepository.findById(email).orElseThrow(NotFoundException::new);
@@ -57,21 +58,14 @@ public class PatientService {
         return patient;
     }
 
-    public String login(UserDto userDto) throws NotFoundException {
+    public UserDto login(UserDto userDto) throws NotFoundException {
         Optional<Patient> databasePatient = patientRepository.findById(userDto.getEmail());
         if (databasePatient.isEmpty()) {
             throw new NotFoundException();
         }
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.matches(userDto.getPassword(), databasePatient.get().getPassword())) {
-            long currentTimeMillis = System.currentTimeMillis();
-            return Jwts.builder()
-                    .setSubject(userDto.getEmail())
-                    .claim("roles", "user")
-                    .setIssuedAt(new Date(currentTimeMillis))
-                    .setExpiration(new Date(currentTimeMillis + 100000))
-                    .signWith(JwtKeyProvider.secretKey)
-                    .compact();
+            return jwtService.generateToken(userDto);
         } else {
             throw new WrongCredentials();
         }

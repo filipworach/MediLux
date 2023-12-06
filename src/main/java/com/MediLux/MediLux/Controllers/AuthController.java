@@ -7,20 +7,20 @@ import com.MediLux.MediLux.Model.Patient;
 import com.MediLux.MediLux.Repositories.PatientRepository;
 import com.MediLux.MediLux.Repositories.RoleRepository;
 import com.MediLux.MediLux.Service.AuthService;
+import com.MediLux.MediLux.Service.JWTService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     private final AuthService authService;
-
+    private final JWTService jwtService;
 
 //    @PostMapping("/signin")
 //    public ResponseEntity<String> authenticateUser(@RequestBody UserDto registerDto) {
@@ -33,16 +33,30 @@ public class AuthController {
 //        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
 //    }
 
+
+
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> authenticateUser(@RequestBody UserDto userDto) {
+
         try {
-            return new ResponseEntity<>(authService.login(userDto), HttpStatus.OK);
+
+
+            return new ResponseEntity<>(jwtService.generateToken(userDto), HttpStatus.OK);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }  catch (WrongCredentials e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    }
+    @PreAuthorize("hasAuthority('LEKARZ') or hasAuthority('PACJENT')")
+    @PutMapping("/change_password")
+    ResponseEntity<UserDto> changePassword(@RequestBody UserDto userDto) {
+        try {
+            return new ResponseEntity<>(jwtService.changePassword(userDto), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
 }

@@ -23,7 +23,7 @@ public class VisitType {
     private String description;
     @ManyToMany
     @JoinTable(
-            name = "visit_types_employees",
+            name = "employee_visit",
             joinColumns = @JoinColumn(name = "visit_type_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
     @JsonIgnore
